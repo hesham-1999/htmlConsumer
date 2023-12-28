@@ -1,0 +1,53 @@
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+</head>
+<body>
+    <input type="text" id="inputField" placeholder=" Plz Enter Countery Name">
+    <button id="submitButton">Submit</button> 
+    <div id="result">
+    </div>
+
+    <script>
+        $(document).ready(
+        function() 
+        {
+        $('#submitButton').click(function() {
+               
+                var inputValue = $('#inputField').val();
+                var url  = `http://localhost:31002/api/Weather?name=${inputValue}`;
+              console.log(url);
+                $.ajax({
+                    url: url,
+                    method: 'GET',
+                    data : {inputValue},
+                    success: function(response) {
+                        console.log(response)
+                        $('#result').html(` 
+                        <p>  Name ${response.location.name} </p>
+                        <p> region Name ${response.location.region} </p>
+                        <p> Countery Name ${response.location.country} </p>
+                        <p> lat ${response.location.lat} </p>
+                        <p> lon ${response.location.lon} </p>
+                        <p> local time ${response.location.localtime} </p>
+                        <p> temp_c ${response.current.temp_c} </p>
+                        <p> temp_f  ${response.current.temp_f} </p>
+                        <p> text ${response.current.condition.text} </p>
+                        <p> temp_f  text ${response.current.condition.text} </p>
+                        <img src="${response.current.condition.icon}" alt="Image from the Internet">
+                        `);
+                    },
+                    error: function(error) {
+                        $('#result').html('Error: ' + status);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
